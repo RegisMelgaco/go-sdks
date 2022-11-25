@@ -1,7 +1,6 @@
 package erring
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"runtime/debug"
@@ -32,40 +31,14 @@ type Err struct {
 }
 
 func (e Err) Error() string {
-	type JSONErr struct {
-		Name        string         `json:"name,omitempty"`
-		Payload     map[string]any `json:"payload,omitempty"`
-		InternalErr string         `json:"internal_error,omitempty"`
-		Stack       []byte         `json:"stack,omitempty"`
-		TypeErr     error          `json:"type,omitempty"`
-	}
-
-	var internalErr string
-	if e.InternalErr != nil {
-		internalErr = e.InternalErr.Error()
-	}
-
-	jErr := JSONErr{
-		Name:        e.Name,
-		Payload:     e.Payload,
-		InternalErr: internalErr,
-		Stack:       e.Stack,
-		TypeErr:     e.TypeErr,
-	}
-
-	v, err := json.Marshal(jErr)
-	if err != nil {
-		return fmt.Sprintf(
-			`{"name":%v,"payload":%v,"internalErr":%v,"typeErr":%v,"stack":%v}`,
-			e.Name,
-			e.Payload,
-			e.InternalErr,
-			e.TypeErr,
-			e.Stack,
-		)
-	}
-
-	return string(v)
+	return fmt.Sprintf(
+		`{"name":%v,"payload":%v,"internalErr":%v,"typeErr":%v,"stack":%v}`,
+		e.Name,
+		e.Payload,
+		e.InternalErr,
+		e.TypeErr,
+		e.Stack,
+	)
 }
 
 func (e Err) Is(target error) bool {
