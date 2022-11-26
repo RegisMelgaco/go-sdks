@@ -1,6 +1,8 @@
 package erring
 
 import (
+	"bytes"
+	"encoding/base64"
 	"errors"
 	"fmt"
 	"runtime/debug"
@@ -20,6 +22,7 @@ func DisableStack() {
 
 type ErrBuilder struct {
 	Name        string
+	Description string
 	Payload     map[string]any
 	InternalErr error
 }
@@ -31,13 +34,17 @@ type Err struct {
 }
 
 func (e Err) Error() string {
+	stack := []byte("")
+	_, _ = base64.NewDecoder(base64.RawStdEncoding, bytes.NewReader(e.Stack)).Read(stack)
+
 	return fmt.Sprintf(
-		`{"name":%v,"payload":%v,"internalErr":%v,"typeErr":%v,"stack":%v}`,
+		"name: %s\ndescription: %v\npayload: %v\ninternalErr: %v\ntypeErr: %v\n%s",
 		e.Name,
+		e.Description,
 		e.Payload,
 		e.InternalErr,
 		e.TypeErr,
-		e.Stack,
+		stack,
 	)
 }
 
@@ -78,17 +85,7 @@ func WithType(t error) func(*Err) {
 }
 
 func Wrap(err error) ErrBuilder {
-	b := ErrBuilder{}
-	if e, ok := err.(Err); ok {
-		b.Name = e.Name
-		b.Payload = e.Payload
-
-		return b
-	}
-
-	b.InternalErr = err
-
-	return b
+	return ErrBuilder{}.Wrap(err)
 }
 
 func (b ErrBuilder) Build() error {
@@ -112,8 +109,24 @@ func (b ErrBuilder) With(label string, v any) ErrBuilder {
 	return b
 }
 
-func (b ErrBuilder) Internal(err error) ErrBuilder {
+func (b ErrBuilder) Wrap(err error) ErrBuilder {
+	if e, ok := err.(Err); ok && e.Name != "" {
+		b.Name = e.Name
+
+		for k, v := range e.Payload {
+			b.Payload[k] = v
+		}
+
+		return b
+	}
+
 	b.InternalErr = err
+
+	return b
+}
+
+func (b ErrBuilder) Describe(s string) ErrBuilder {
+	b.Description = s
 
 	return b
 }

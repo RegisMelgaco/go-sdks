@@ -73,10 +73,11 @@ func SetupPgContainer() (teardown func()) {
 }
 
 func GetDB(t *testing.T) *pgxpool.Pool {
-	dbName := fmt.Sprintf("db_%v_%s", rand.Int(), strings.ToLower(t.Name()))
-	fmt.Println("creating db", dbName)
+	testName := strings.ReplaceAll(strings.ToLower(t.Name()), "/", "__")
+	dbName := fmt.Sprintf("db_%v_%s", rand.Int(), testName)
+
 	_, err := db.Exec(context.Background(), fmt.Sprintf("CREATE DATABASE %s;", dbName))
-	require.NoError(t, err, "failed to create new test db: %w", err)
+	require.NoError(t, err, "failed to create new test db (name: %s): %w", dbName, err)
 
 	newDBConnStr := fmt.Sprintf(
 		"postgres://postgres:postgres@localhost:%d/%s?user=postgres&password=secret&sslmode=disable",
