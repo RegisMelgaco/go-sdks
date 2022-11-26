@@ -17,10 +17,10 @@ import (
 var (
 	db          *pgxpool.Pool
 	migrateOnce sync.Once
-	migrateFunc func() error
+	migrateFunc func(conn string) error
 )
 
-func SetMigrationFunc(fn func() error) {
+func SetMigrationFunc(fn func(conn string) error) {
 	migrateOnce.Do(func() {
 		migrateFunc = fn
 	})
@@ -91,7 +91,8 @@ func GetDB(t *testing.T) *pgxpool.Pool {
 	require.NoError(t, err, "failed to comunicate with new test db: %w", err)
 
 	if migrateFunc != nil {
-		err = migrateFunc()
+		err = migrateFunc(newDBConnStr)
+
 		require.NoError(t, err, "failed to run migrations: %w", err)
 	}
 
