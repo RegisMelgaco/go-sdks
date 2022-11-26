@@ -111,3 +111,9 @@ func (b ErrBuilder) With(label string, v any) ErrBuilder {
 
 	return b
 }
+
+func (b ErrBuilder) Internal(err error) ErrBuilder {
+	b.InternalErr = err
+
+	return b
+}
