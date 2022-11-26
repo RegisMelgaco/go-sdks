@@ -1,11 +1,10 @@
 package erring
 
 import (
-	"bytes"
-	"encoding/base64"
 	"errors"
 	"fmt"
 	"runtime/debug"
+	"strings"
 	"sync"
 )
 
@@ -21,31 +20,28 @@ func DisableStack() {
 }
 
 type ErrBuilder struct {
-	Name        string
-	Description string
-	Payload     map[string]any
-	InternalErr error
+	Err
 }
 
 type Err struct {
 	//TODO Error code
-	ErrBuilder
-	Stack   []byte
-	TypeErr error
+	Name        string
+	Description string
+	Payload     map[string]any
+	InternalErr error
+	TypeErr     error
+	Stack       []byte
 }
 
 func (e Err) Error() string {
-	stack := []byte("")
-	_, _ = base64.NewDecoder(base64.RawStdEncoding, bytes.NewReader(e.Stack)).Read(stack)
-
 	return fmt.Sprintf(
-		"name: %s\ndescription: %v\npayload: %v\ninternalErr: %v\ntypeErr: %v\n%s",
+		"name: %s\ndescription: %v\npayload: %v\ninternalErr: %v\ntypeErr: %v\n\n\n%s",
 		e.Name,
 		e.Description,
 		e.Payload,
 		e.InternalErr,
 		e.TypeErr,
-		stack,
+		e.Stack,
 	)
 }
 
@@ -90,14 +86,11 @@ func Wrap(err error) ErrBuilder {
 }
 
 func (b ErrBuilder) Build() error {
-	err := Err{}
-	err.ErrBuilder = b
-
-	if isStackEnabled {
-		err.Stack = debug.Stack()
+	if isStackEnabled && len(b.Stack) > 0 {
+		b.Stack = debug.Stack()
 	}
 
-	return err
+	return b.Err
 }
 
 func (b ErrBuilder) With(label string, v any) ErrBuilder {
@@ -111,23 +104,52 @@ func (b ErrBuilder) With(label string, v any) ErrBuilder {
 }
 
 func (b ErrBuilder) Wrap(err error) ErrBuilder {
-	if e, ok := err.(Err); ok && e.Name != "" {
-		b.Name = e.Name
-
-		for k, v := range e.Payload {
-			b.Payload[k] = v
-		}
-
-		return b
+	e, ok := err.(Err)
+	if !ok {
+		return ErrBuilder{Err{InternalErr: err}}
 	}
 
-	b.InternalErr = err
+	if b.Name != "" {
+		b.InternalErr = Err{Name: e.Name}
+	} else {
+		b.Name = e.Name
+	}
+
+	e.Description = strings.Join([]string{b.Description, e.Description}, " - ")
+
+	if e.Payload == nil {
+		e.Payload = map[string]any{}
+	}
+	if b.Payload == nil {
+		b.Payload = map[string]any{}
+	}
+	for k, v := range e.Payload {
+		b.Payload[k] = v
+	}
+
+	if b.TypeErr == nil {
+		b.TypeErr = e.TypeErr
+	}
+
+	if e.InternalErr != nil {
+		b.InternalErr = e.InternalErr
+	}
+
+	if e.Stack != nil {
+		b.Stack = e.Stack
+	}
 
 	return b
 }
 
 func (b ErrBuilder) Describe(s string) ErrBuilder {
 	b.Description = s
+
+	return b
+}
+
+func (b ErrBuilder) ChangeType(err error) ErrBuilder {
+	b.TypeErr = err
 
 	return b
 }
