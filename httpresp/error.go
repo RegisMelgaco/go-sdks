@@ -9,6 +9,7 @@ import (
 
 type ErrResponse struct {
 	Description string `json:"description"`
+	//TODO error code
 }
 
 func newErrDescResponse(err error, status int, fallbackDesc string) Response {
@@ -48,4 +49,17 @@ func Internal(err error) Response {
 		payload: ErrResponse{Description: "internal server error"},
 		err:     err,
 	}
+}
+
+func Error(err error) Response {
+	switch {
+	case errors.Is(err, erring.ErrBadRequest):
+		return BadRequest(err)
+	case errors.Is(err, erring.ErrNotFound):
+		return NotFound(err)
+	case errors.Is(err, erring.ErrUnauthorized):
+		return Unauthorized(err)
+	}
+
+	return Internal(err)
 }

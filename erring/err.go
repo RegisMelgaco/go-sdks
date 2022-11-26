@@ -28,6 +28,7 @@ type ErrBuilder struct {
 }
 
 type Err struct {
+	//TODO Error code
 	ErrBuilder
 	Stack   []byte
 	TypeErr error
