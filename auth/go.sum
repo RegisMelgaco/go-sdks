@@ -990,8 +990,15 @@ github.com/prometheus/procfs v0.2.0/go.mod h1:lV6e/gmhEcM9IjHGsFOCxxuZ+z1YqCvr4O
 github.com/prometheus/procfs v0.6.0/go.mod h1:cz+aTbrPOrUb4q7XlbU9ygM+/jj0fzG6c1xBZuNvfVA=
 github.com/prometheus/procfs v0.7.3/go.mod h1:cz+aTbrPOrUb4q7XlbU9ygM+/jj0fzG6c1xBZuNvfVA=
 github.com/prometheus/tsdb v0.7.1/go.mod h1:qhTCs0VvXwvX/y3TZrWD7rabWM+ijKTux40TwIPHuXU=
+github.com/regismelgaco/go-sdks/erring v0.0.0-20221126102151-e847e23b6dbb h1:VoqWle9v2Js/IFPoYNsUTlP+y8ROoFhwGMdl6clGn6I=
+github.com/regismelgaco/go-sdks/erring v0.0.0-20221126102151-e847e23b6dbb/go.mod h1:/g1d/ekRRFec5WiV2F7qeVtGpDLpUH/Z0jq55Jg5fnk=
+github.com/regismelgaco/go-sdks/erring v0.0.0-20221127000045-8d35ea79ce43 h1:yomQWX25wtW04KB+qcpRme6mJkO2YUiX6BN+EWBVOGM=
+github.com/regismelgaco/go-sdks/erring v0.0.0-20221127000045-8d35ea79ce43/go.mod h1:/g1d/ekRRFec5WiV2F7qeVtGpDLpUH/Z0jq55Jg5fnk=
 github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221126145411-d8dab6b7357f h1:DERjhxh45y1dRbaHp0ylxC8in6CAJiiVn/BSh6hm3+g=
 github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221126145411-d8dab6b7357f/go.mod h1:tj1xnK3oqq7bPTlmwZ8F1emFyGr+lE7BJkaLVvY3k3Q=
+github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221127000045-8d35ea79ce43 h1:Ksp4/Z6O8QnUgg21qN9jZP5sQ/Zo97Uy53iNu/DQnk0=
+github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221127000045-8d35ea79ce43/go.mod h1:tj1xnK3oqq7bPTlmwZ8F1emFyGr+lE7BJkaLVvY3k3Q=
+github.com/regismelgaco/go-sdks/postgres v0.0.0-20221126102151-e847e23b6dbb/go.mod h1:zifXfw/5A48T4rda3vyJ8Wn3zSGrpaojMBCsUlQi2/k=
 github.com/remyoudompheng/bigfft v0.0.0-20190728182440-6a916e37a237/go.mod h1:qqbHyh8v60DhA7CoWK5oRCqLrMHRGoxYCSS9EjAz6Eo=
 github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0/go.mod h1:qqbHyh8v60DhA7CoWK5oRCqLrMHRGoxYCSS9EjAz6Eo=
 github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod h1:XWv6SoW27p1b0cqNHllgS5HIMJraePCO15w5zCzIWYg=

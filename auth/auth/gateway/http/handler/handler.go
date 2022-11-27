@@ -54,7 +54,7 @@ func (h Handler) Login(r *http.Request) httpresp.Response {
 func (h Handler) IsAuthorized(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		auth := r.Header.Get("Authorization")
-		if auth != "" {
+		if auth == "" {
 			httpresp.BadRequest(entity.ErrMissingAuthorization).Handle(w)
 
 			return
