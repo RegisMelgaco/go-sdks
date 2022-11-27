@@ -44,7 +44,7 @@ func (e encryptor) GenerateSessionToken(claims entity.TokenClaims) (entity.Token
 		"expiration": claims.Expiration,
 	}
 
-	t := jwt.NewWithClaims(jwt.SigningMethodES256, jwtClaims)
+	t := jwt.NewWithClaims(jwt.SigningMethodHS256, jwtClaims)
 
 	signedToken, err := t.SignedString(e.jwtSecret)
 	if err != nil {
