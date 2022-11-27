@@ -418,6 +418,8 @@ github.com/garyburd/redigo v0.0.0-20150301180006-535138d7bcd7/go.mod h1:NR3MbYis
 github.com/getsentry/raven-go v0.2.0/go.mod h1:KungGk8q33+aIAZUIVWZDr2OfAEBsO49PX4NzFV5kcQ=
 github.com/ghodss/yaml v0.0.0-20150909031657-73d445a93680/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
 github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeMEF04=
+github.com/go-chi/chi/v5 v5.0.7 h1:rDTPXLDHGATaeHvVlLcR4Qe0zftYethFucbjVQ1PxU8=
+github.com/go-chi/chi/v5 v5.0.7/go.mod h1:DslCQbL2OYiznFReuXYUmQ2hGd1aDpCnlMNITLSKoi8=
 github.com/go-fonts/dejavu v0.1.0/go.mod h1:4Wt4I4OU2Nq9asgDCteaAaWZOV24E+0/Pwo0gppep4g=
 github.com/go-fonts/latin-modern v0.2.0/go.mod h1:rQVLdDMK+mK1xscDwsqM5J8U2jrRa3T0ecnM9pNujks=
 github.com/go-fonts/liberation v0.1.1/go.mod h1:K6qoJYypsmfVjWg8KOVDQhLc8UDgIK2HYqyqAO9z7GY=
@@ -994,11 +996,17 @@ github.com/regismelgaco/go-sdks/erring v0.0.0-20221126102151-e847e23b6dbb h1:Voq
 github.com/regismelgaco/go-sdks/erring v0.0.0-20221126102151-e847e23b6dbb/go.mod h1:/g1d/ekRRFec5WiV2F7qeVtGpDLpUH/Z0jq55Jg5fnk=
 github.com/regismelgaco/go-sdks/erring v0.0.0-20221127000045-8d35ea79ce43 h1:yomQWX25wtW04KB+qcpRme6mJkO2YUiX6BN+EWBVOGM=
 github.com/regismelgaco/go-sdks/erring v0.0.0-20221127000045-8d35ea79ce43/go.mod h1:/g1d/ekRRFec5WiV2F7qeVtGpDLpUH/Z0jq55Jg5fnk=
+github.com/regismelgaco/go-sdks/erring v0.0.0-20221127002404-4d857029b5be h1:LoLGYjLhmtYo26BCo3qNuCv0MAB0Wmf/mDkO/xruKes=
+github.com/regismelgaco/go-sdks/erring v0.0.0-20221127002404-4d857029b5be/go.mod h1:/g1d/ekRRFec5WiV2F7qeVtGpDLpUH/Z0jq55Jg5fnk=
 github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221126145411-d8dab6b7357f h1:DERjhxh45y1dRbaHp0ylxC8in6CAJiiVn/BSh6hm3+g=
 github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221126145411-d8dab6b7357f/go.mod h1:tj1xnK3oqq7bPTlmwZ8F1emFyGr+lE7BJkaLVvY3k3Q=
 github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221127000045-8d35ea79ce43 h1:Ksp4/Z6O8QnUgg21qN9jZP5sQ/Zo97Uy53iNu/DQnk0=
 github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221127000045-8d35ea79ce43/go.mod h1:tj1xnK3oqq7bPTlmwZ8F1emFyGr+lE7BJkaLVvY3k3Q=
+github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221127002404-4d857029b5be h1:WZxmTfeKKQIYvhxO7EQjIMkS6K3W056OKnTGIzJPnaU=
+github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221127002404-4d857029b5be/go.mod h1:/IOQKJOroupPS43lZUsKdlWhYNJXPwu/v89ikHheDro=
 github.com/regismelgaco/go-sdks/postgres v0.0.0-20221126102151-e847e23b6dbb/go.mod h1:zifXfw/5A48T4rda3vyJ8Wn3zSGrpaojMBCsUlQi2/k=
+github.com/regismelgaco/go-sdks/postgres v0.0.0-20221127002404-4d857029b5be h1:JcLmVkYBBGn5OcZhmwTIjZl6C3t7KESnp1MHe4u9CFU=
+github.com/regismelgaco/go-sdks/postgres v0.0.0-20221127002404-4d857029b5be/go.mod h1:zifXfw/5A48T4rda3vyJ8Wn3zSGrpaojMBCsUlQi2/k=
 github.com/remyoudompheng/bigfft v0.0.0-20190728182440-6a916e37a237/go.mod h1:qqbHyh8v60DhA7CoWK5oRCqLrMHRGoxYCSS9EjAz6Eo=
 github.com/remyoudompheng/bigfft v0.0.0-20200410134404-eec4a21b6bb0/go.mod h1:qqbHyh8v60DhA7CoWK5oRCqLrMHRGoxYCSS9EjAz6Eo=
 github.com/rogpeppe/fastuuid v0.0.0-20150106093220-6724a57986af/go.mod h1:XWv6SoW27p1b0cqNHllgS5HIMJraePCO15w5zCzIWYg=

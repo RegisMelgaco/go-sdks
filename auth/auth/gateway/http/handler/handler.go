@@ -4,8 +4,12 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
+	"github.com/jackc/pgx/v4/pgxpool"
 	"github.com/regismelgaco/go-sdks/auth/auth/entity"
+	"github.com/regismelgaco/go-sdks/auth/auth/gateway/encryptor"
 	v1 "github.com/regismelgaco/go-sdks/auth/auth/gateway/http/handler/v1"
+	"github.com/regismelgaco/go-sdks/auth/auth/gateway/postgres/repository"
 	"github.com/regismelgaco/go-sdks/auth/auth/usecase"
 	"github.com/regismelgaco/go-sdks/erring"
 	"github.com/regismelgaco/go-sdks/httpresp"
@@ -15,8 +19,17 @@ type Handler struct {
 	u usecase.Usecase
 }
 
-func New(u usecase.Usecase) Handler {
+func NewHandler(p *pgxpool.Pool, jwtSecret string) Handler {
+	encry := encryptor.NewEncryptor(jwtSecret)
+	repo := repository.NewUserRepository(p)
+	u := usecase.NewUsecase(encry, repo)
+
 	return Handler{u}
+}
+
+func (h Handler) SetupRoutes(r chi.Router) {
+	r.Post("/signup", httpresp.Handle(h.PostUser))
+	r.Post("/login", httpresp.Handle(h.Login))
 }
 
 func (h Handler) PostUser(r *http.Request) httpresp.Response {
