@@ -20,7 +20,13 @@ func DisableStack() {
 }
 
 type ErrBuilder struct {
-	Err
+	//TODO Error code
+	name        string
+	description string
+	payload     map[string]any
+	internalErr error
+	typeErr     error
+	stack       []byte
 }
 
 type Err struct {
@@ -86,19 +92,26 @@ func Wrap(err error) ErrBuilder {
 }
 
 func (b ErrBuilder) Build() error {
-	if isStackEnabled && len(b.Stack) > 0 {
-		b.Stack = debug.Stack()
+	if isStackEnabled && len(b.stack) > 0 {
+		b.stack = debug.Stack()
 	}
 
-	return b.Err
+	return Err{
+		Name:        b.name,
+		Description: b.description,
+		Payload:     b.payload,
+		InternalErr: b.internalErr,
+		TypeErr:     b.typeErr,
+		Stack:       b.stack,
+	}
 }
 
 func (b ErrBuilder) With(label string, v any) ErrBuilder {
-	if b.Payload == nil {
-		b.Payload = make(map[string]any)
+	if b.payload == nil {
+		b.payload = make(map[string]any)
 	}
 
-	b.Payload[label] = v
+	b.payload[label] = v
 
 	return b
 }
@@ -106,50 +119,50 @@ func (b ErrBuilder) With(label string, v any) ErrBuilder {
 func (b ErrBuilder) Wrap(err error) ErrBuilder {
 	e, ok := err.(Err)
 	if !ok {
-		return ErrBuilder{Err{InternalErr: err}}
+		return ErrBuilder{internalErr: err}
 	}
 
-	if b.Name != "" {
-		b.InternalErr = Err{Name: e.Name}
+	if b.name != "" {
+		b.internalErr = Err{Name: e.Name}
 	} else {
-		b.Name = e.Name
+		b.name = e.Name
 	}
 
-	e.Description = strings.Join([]string{b.Description, e.Description}, " - ")
+	e.Description = strings.Join([]string{b.description, e.Description}, " - ")
 
 	if e.Payload == nil {
 		e.Payload = map[string]any{}
 	}
-	if b.Payload == nil {
-		b.Payload = map[string]any{}
+	if b.payload == nil {
+		b.payload = map[string]any{}
 	}
 	for k, v := range e.Payload {
-		b.Payload[k] = v
+		b.payload[k] = v
 	}
 
-	if b.TypeErr == nil {
-		b.TypeErr = e.TypeErr
+	if b.typeErr == nil {
+		b.typeErr = e.TypeErr
 	}
 
 	if e.InternalErr != nil {
-		b.InternalErr = e.InternalErr
+		b.internalErr = e.InternalErr
 	}
 
 	if e.Stack != nil {
-		b.Stack = e.Stack
+		b.stack = e.Stack
 	}
 
 	return b
 }
 
 func (b ErrBuilder) Describe(s string) ErrBuilder {
-	b.Description = s
+	b.description = s
 
 	return b
 }
 
 func (b ErrBuilder) ChangeType(err error) ErrBuilder {
-	b.TypeErr = err
+	b.typeErr = err
 
 	return b
 }
