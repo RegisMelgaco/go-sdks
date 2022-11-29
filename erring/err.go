@@ -166,3 +166,14 @@ func (b ErrBuilder) ChangeType(err error) ErrBuilder {
 
 	return b
 }
+
+func (b ErrBuilder) Err() Err {
+	return Err{
+		Name:        b.name,
+		Description: b.description,
+		Payload:     b.payload,
+		InternalErr: b.internalErr,
+		TypeErr:     b.typeErr,
+		Stack:       b.stack,
+	}
+}
