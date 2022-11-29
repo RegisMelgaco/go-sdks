@@ -92,18 +92,11 @@ func Wrap(err error) ErrBuilder {
 }
 
 func (b ErrBuilder) Build() error {
-	if isStackEnabled && len(b.stack) > 0 {
+	if isStackEnabled && len(b.stack) == 0 {
 		b.stack = debug.Stack()
 	}
 
-	return Err{
-		Name:        b.name,
-		Description: b.description,
-		Payload:     b.payload,
-		InternalErr: b.internalErr,
-		TypeErr:     b.typeErr,
-		Stack:       b.stack,
-	}
+	return b.Err()
 }
 
 func (b ErrBuilder) With(label string, v any) ErrBuilder {
