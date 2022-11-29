@@ -40,15 +40,25 @@ type Err struct {
 }
 
 func (e Err) Error() string {
-	return fmt.Sprintf(
-		"name: %s\ndescription: %v\npayload: %v\ninternalErr: %v\ntypeErr: %v\n\n\n%s",
-		e.Name,
-		e.Description,
-		e.Payload,
-		e.InternalErr,
-		e.TypeErr,
-		e.Stack,
-	)
+	list := []string{}
+
+	if e.Name != "" {
+		list = append(list, "name: "+e.Name)
+	}
+	if e.Description != "" {
+		list = append(list, "description: "+e.Description)
+	}
+	if len(e.Payload) > 0 {
+		list = append(list, fmt.Sprintf("payload: %v", e.Payload))
+	}
+	if e.TypeErr != nil {
+		list = append(list, "type: "+e.TypeErr.Error())
+	}
+	if e.InternalErr != nil {
+		list = append(list, "internal: "+e.InternalErr.Error())
+	}
+
+	return strings.Join(list, " | ")
 }
 
 func (e Err) Is(target error) bool {
