@@ -23,6 +23,8 @@ func Migrate(connectionStr string) error {
 			Build()
 	}
 
+	connectionStr += "&x-migrations-table=auth_migrations"
+
 	m, err := migrate.NewWithSourceInstance("httpfs", source, connectionStr)
 	if err != nil {
 		return erring.Wrap(err).
