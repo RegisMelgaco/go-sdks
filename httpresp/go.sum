@@ -5,6 +5,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/regismelgaco/go-sdks/erring v0.0.0-20221127002404-4d857029b5be h1:LoLGYjLhmtYo26BCo3qNuCv0MAB0Wmf/mDkO/xruKes=
 github.com/regismelgaco/go-sdks/erring v0.0.0-20221127002404-4d857029b5be/go.mod h1:/g1d/ekRRFec5WiV2F7qeVtGpDLpUH/Z0jq55Jg5fnk=
+github.com/regismelgaco/go-sdks/logger v0.0.0-20221130001832-6bee3bf25aea h1:z6TBA2AgYv2i2N5zDM9Mi6lt2BkaUjYYAhH70lragPA=
+github.com/regismelgaco/go-sdks/logger v0.0.0-20221130001832-6bee3bf25aea/go.mod h1:o/43JiFzLQGUvjVO47ozclctuFvqcjnUFyNKNwwrZPw=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=
 github.com/stretchr/testify v1.3.0/go.mod h1:M5WIy9Dh21IEIfnGCwXGc5bZfKNJtfHm1UVUgZn+9EI=
 github.com/stretchr/testify v1.7.0/go.mod h1:6Fq8oRcR53rry900zMqJjRRixrwX3KX962/h/Wwjteg=
