@@ -11,7 +11,7 @@ import (
 type Usecase interface {
 	CreateUser(context.Context, CreateUserInput) (entity.User, error)
 	Login(context.Context, LoginInput) (entity.Token, error)
-	IsAuthorized(ctx context.Context, token entity.Token) error
+	IsAuthorized(ctx context.Context, token entity.Token) (entity.TokenClaims, error)
 }
 
 type CreateUserInput struct {
@@ -80,17 +80,19 @@ func (u usecase) Login(ctx context.Context, input LoginInput) (entity.Token, err
 	return token, nil
 }
 
-func (u usecase) IsAuthorized(ctx context.Context, token entity.Token) error {
+func (u usecase) IsAuthorized(ctx context.Context, token entity.Token) (entity.TokenClaims, error) {
 	claims, err := u.GetClaimsFromToken(token)
 	if err != nil {
-		return erring.Wrap(err).Build()
+		return entity.TokenClaims{}, erring.Wrap(err).
+			Wrap(entity.ErrInvalidToken).
+			Build()
 	}
 
 	if time.Now().After(claims.Expiration) {
-		err = entity.ErrExpiredToken
-
-		return erring.Wrap(err).Build()
+		return entity.TokenClaims{}, erring.Wrap(err).
+			Wrap(entity.ErrExpiredToken).
+			Build()
 	}
 
-	return nil
+	return claims, nil
 }

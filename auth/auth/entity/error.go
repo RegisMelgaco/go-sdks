@@ -11,4 +11,5 @@ var (
 	ErrUserNotFound         = erring.New("user not found", erring.WithType(erring.ErrNotFound))
 	ErrInvalidLoginInput    = erring.New("invalid login input", erring.WithType(erring.ErrBadRequest))
 	ErrMissingAuthorization = erring.New("authorization header is missing", erring.WithType(erring.ErrBadRequest))
+	ErrMissingClaimsCtx     = erring.New("authorization token claims are missing from context")
 )

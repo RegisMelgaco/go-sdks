@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"net/http"
 
@@ -68,18 +69,31 @@ func (h Handler) IsAuthorized(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		auth := r.Header.Get("Authorization")
 		if auth == "" {
-			httpresp.BadRequest(entity.ErrMissingAuthorization).Handle(w)
+			httpresp.BadRequest(entity.ErrMissingAuthorization).Handle(w, r)
 
 			return
 		}
 
-		err := h.u.IsAuthorized(r.Context(), entity.Token(auth))
+		claims, err := h.u.IsAuthorized(r.Context(), entity.Token(auth))
 		if err != nil {
-			httpresp.Error(err).Handle(w)
+			httpresp.Error(err).Handle(w, r)
 
 			return
 		}
 
-		next.ServeHTTP(w, r)
+		ctx := context.WithValue(r.Context(), claimsKey{}, claims)
+
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
+}
+
+type claimsKey struct{}
+
+func ClaimsFromContext(ctx context.Context) (entity.TokenClaims, error) {
+	c, ok := ctx.Value(claimsKey{}).(entity.TokenClaims)
+	if !ok {
+		return entity.TokenClaims{}, erring.Wrap(entity.ErrMissingClaimsCtx).Build()
+	}
+
+	return c, nil
 }
