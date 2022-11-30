@@ -54,15 +54,11 @@ func (u usecase) CreateUser(ctx context.Context, input CreateUserInput) (entity.
 func (u usecase) Login(ctx context.Context, input LoginInput) (entity.Token, error) {
 	user, err := u.SelectByUserName(ctx, input.UserName)
 	if err != nil {
-		return "", erring.Wrap(entity.ErrInvalidLoginInput).
-			Wrap(err).
-			Build()
+		return "", erring.Wrap(entity.ErrInvalidLoginInput).Wrap(err)
 	}
 
 	if err := u.CheckPassword(user.Secret, input.Pass); err != nil {
-		return "", erring.Wrap(entity.ErrInvalidLoginInput).
-			Wrap(err).
-			Build()
+		return "", erring.Wrap(entity.ErrInvalidLoginInput).Wrap(err)
 	}
 
 	const day = 24 * time.Hour
@@ -83,15 +79,11 @@ func (u usecase) Login(ctx context.Context, input LoginInput) (entity.Token, err
 func (u usecase) IsAuthorized(ctx context.Context, token entity.Token) (entity.TokenClaims, error) {
 	claims, err := u.GetClaimsFromToken(token)
 	if err != nil {
-		return entity.TokenClaims{}, erring.Wrap(err).
-			Wrap(entity.ErrInvalidToken).
-			Build()
+		return entity.TokenClaims{}, erring.Wrap(err).Wrap(entity.ErrInvalidToken)
 	}
 
 	if time.Now().After(claims.Expiration) {
-		return entity.TokenClaims{}, erring.Wrap(err).
-			Wrap(entity.ErrExpiredToken).
-			Build()
+		return entity.TokenClaims{}, erring.Wrap(err).Wrap(entity.ErrExpiredToken)
 	}
 
 	return claims, nil

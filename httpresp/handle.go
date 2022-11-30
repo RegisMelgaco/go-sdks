@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/regismelgaco/go-sdks/erring"
+	"github.com/regismelgaco/go-sdks/logger"
 	"go.uber.org/zap"
 )
 
@@ -22,7 +22,7 @@ func (res Response) Handle(w http.ResponseWriter, req *http.Request) {
 	err := json.NewEncoder(w).Encode(res.payload)
 	if err != nil {
 		//TODO log as json with Uberzap logger
-		err = erring.Wrap(err).Describe("failed to encode response body").Build()
+		err = erring.Wrap(err).Describe("failed to encode response body")
 
 		fmt.Println(err)
 	}
@@ -34,14 +34,11 @@ func (res Response) Handle(w http.ResponseWriter, req *http.Request) {
 	// log error
 	if res.err != nil {
 		lvl := zap.ErrorLevel
-		if res.status < 500 && res.status >= 400 {
+		if res.status < http.StatusInternalServerError && res.status >= http.StatusBadRequest {
 			lvl = zap.WarnLevel
 		}
 
-		logger, ok := req.Context().Value(loggerCtxKey{}).(*zap.Logger)
-		if !ok {
-			log.Panicf("logger not found while trying to log err: %s\n", res.err.Error())
-		}
+		logger := logger.FromContext(req.Context())
 
 		var err erring.Err
 		if errors.As(res.err, &err) {

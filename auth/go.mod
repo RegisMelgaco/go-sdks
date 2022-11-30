@@ -9,7 +9,7 @@ require (
 	github.com/jackc/pgconn v1.13.0
 	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
 	github.com/jackc/pgx/v4 v4.17.2
-	github.com/regismelgaco/go-sdks/erring v0.0.0-20221127002404-4d857029b5be
+	github.com/regismelgaco/go-sdks/erring v0.0.0-20221127113222-947ccd31e2bf
 	github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221127002404-4d857029b5be
 	github.com/regismelgaco/go-sdks/postgres v0.0.0-20221127002404-4d857029b5be
 	github.com/stretchr/testify v1.8.1
@@ -17,6 +17,8 @@ require (
 )
 
 replace github.com/regismelgaco/go-sdks/httpresp => ../httpresp
+
+replace github.com/regismelgaco/go-sdks/erring => ../erring
 
 require (
 	github.com/Azure/go-ansiterm v0.0.0-20210617225240-d185dfc1b5a1 // indirect
@@ -43,6 +45,7 @@ require (
 	github.com/ory/dockertest v3.3.5+incompatible // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
+	github.com/regismelgaco/go-sdks/logger v0.0.0-20221130001832-6bee3bf25aea // indirect
 	github.com/sirupsen/logrus v1.8.1 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.8.0 // indirect

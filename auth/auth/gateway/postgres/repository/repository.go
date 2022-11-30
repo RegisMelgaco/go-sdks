@@ -32,10 +32,10 @@ func (r repo) Insert(ctx context.Context, user *entity.User) error {
 	var pgErr *pgconn.PgError
 	if err != nil {
 		if errors.As(err, &pgErr); pgErr.Code == pgerrcode.UniqueViolation {
-			return erring.Wrap(entity.ErrUsernameInUse).Build()
+			return erring.Wrap(entity.ErrUsernameInUse)
 		}
 
-		return erring.Wrap(err).Build()
+		return erring.Wrap(err)
 	}
 
 	return nil
@@ -54,10 +54,10 @@ func (r repo) SelectByUserName(ctx context.Context, username string) (entity.Use
 	if err != nil {
 		errBuilder := erring.Wrap(err).With("username", username)
 		if errors.Is(err, pgx.ErrNoRows) {
-			return entity.User{}, errBuilder.Wrap(entity.ErrUserNotFound).Build()
+			return entity.User{}, errBuilder.Wrap(entity.ErrUserNotFound)
 		}
 
-		return entity.User{}, erring.Wrap(err).Describe("failed to select user").Build()
+		return entity.User{}, erring.Wrap(err).Describe("failed to select user")
 	}
 
 	return user, nil

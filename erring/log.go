@@ -20,41 +20,43 @@ func SplitStackFromLogs() {
 	})
 }
 
-func (e Err) Log(logger *zap.Logger, lvl zapcore.Level) {
+func (err Err) Log(logger *zap.Logger, lvl zapcore.Level) Err {
 	fields := []zap.Field{}
 	msg := ""
 
 	msgStrs := []string{}
-	if e.Name != "" {
-		msgStrs = append(msgStrs, e.Name)
+	if err.Name != "" {
+		msgStrs = append(msgStrs, err.Name)
 	}
-	if e.Description != "" {
-		msgStrs = append(msgStrs, e.Description)
+	if err.Description != "" {
+		msgStrs = append(msgStrs, err.Description)
 	}
 	msg = strings.Join(msgStrs, " - ")
 
-	if e.InternalErr != nil {
-		fields = append(fields, zap.Error(e.InternalErr))
+	if err.InternalErr != nil {
+		fields = append(fields, zap.Error(err.InternalErr))
 	}
 
-	if e.Payload != nil {
-		e.Payload = map[string]any{}
+	if err.Payload != nil {
+		err.Payload = map[string]any{}
 	}
-	for k, v := range e.Payload {
+	for k, v := range err.Payload {
 		fields = append(fields, zap.Any(k, v))
 	}
 
-	if e.TypeErr != nil {
-		fields = append(fields, zap.String("err_type", e.TypeErr.Error()))
+	if err.TypeErr != nil {
+		fields = append(fields, zap.String("err_type", err.TypeErr.Error()))
 	}
 
-	if !shouldSplit && e.Stack != nil {
-		fmt.Println(string(e.Stack))
+	if !shouldSplit && err.Stack != nil {
+		fmt.Println(string(err.Stack))
 	}
 
 	logger.Log(lvl, msg, fields...)
 
-	if shouldSplit && e.Stack != nil {
-		fmt.Println(string(e.Stack))
+	if shouldSplit && err.Stack != nil {
+		fmt.Println(string(err.Stack))
 	}
+
+	return err
 }

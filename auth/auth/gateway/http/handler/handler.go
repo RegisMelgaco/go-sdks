@@ -36,7 +36,7 @@ func (h Handler) SetupRoutes(r chi.Router) {
 func (h Handler) PostUser(r *http.Request) httpresp.Response {
 	var input v1.UserInput
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		err = erring.Wrap(err).Build()
+		err = erring.Wrap(err)
 
 		return httpresp.BadRequest(err)
 	}
@@ -52,7 +52,7 @@ func (h Handler) PostUser(r *http.Request) httpresp.Response {
 func (h Handler) Login(r *http.Request) httpresp.Response {
 	var input v1.UserInput
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
-		err = erring.Wrap(err).Build()
+		err = erring.Wrap(err)
 
 		return httpresp.BadRequest(err)
 	}
@@ -92,7 +92,7 @@ type claimsKey struct{}
 func ClaimsFromContext(ctx context.Context) (entity.TokenClaims, error) {
 	c, ok := ctx.Value(claimsKey{}).(entity.TokenClaims)
 	if !ok {
-		return entity.TokenClaims{}, erring.Wrap(entity.ErrMissingClaimsCtx).Build()
+		return entity.TokenClaims{}, erring.Wrap(entity.ErrMissingClaimsCtx)
 	}
 
 	return c, nil
