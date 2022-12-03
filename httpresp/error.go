@@ -40,7 +40,7 @@ func NotFound(err error) Response {
 }
 
 func Unauthorized(err error) Response {
-	return newErrDescResponse(err, http.StatusNotFound, "unauthorized")
+	return newErrDescResponse(err, http.StatusUnauthorized, "unauthorized")
 }
 
 func Internal(err error) Response {

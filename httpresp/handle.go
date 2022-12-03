@@ -18,6 +18,10 @@ func Handle(handler func(*http.Request) Response) http.HandlerFunc {
 }
 
 func (res Response) Handle(w http.ResponseWriter, req *http.Request) {
+	// write header
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(res.status)
+
 	// write body
 	err := json.NewEncoder(w).Encode(res.payload)
 	if err != nil {
@@ -26,10 +30,6 @@ func (res Response) Handle(w http.ResponseWriter, req *http.Request) {
 
 		fmt.Println(err)
 	}
-
-	// write header
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(res.status)
 
 	// log error
 	if res.err != nil {
