@@ -89,9 +89,6 @@ func WithType(t error) func(*Err) {
 
 func Wrap(err error) Err {
 	e := Err{}.Wrap(err)
-	if isStackEnabled && len(e.Stack) == 0 {
-		e.Stack = debug.Stack()
-	}
 
 	return e
 }
@@ -113,16 +110,34 @@ func (err Err) With(label string, v any) Err {
 func (b Err) Wrap(err error) Err {
 	erringErr, ok := err.(Err)
 	if !ok {
-		return Err{InternalErr: err}
+		return Err{
+			InternalErr: err,
+			Stack:       debug.Stack(),
+		}
 	}
 
-	if erringErr.Name != "" {
+	if isStackEnabled && len(b.Stack) == 0 {
+		if len(erringErr.Stack) > 0 {
+			b.Stack = erringErr.Stack
+		} else {
+			b.Stack = debug.Stack()
+		}
+	}
+
+	if b.Name != "" {
 		b.InternalErr = Err{Name: erringErr.Name}
 	} else {
 		b.Name = erringErr.Name
 	}
 
-	b.Description = strings.Join([]string{b.Description, erringErr.Description}, " - ")
+	des := []string{}
+	if b.Description != "" {
+		des = append(des, b.Description)
+	}
+	if erringErr.Description != "" {
+		des = append(des, erringErr.Description)
+	}
+	b.Description = strings.Join(des, " - ")
 
 	if b.Payload == nil {
 		b.Payload = map[string]any{}
@@ -142,15 +157,15 @@ func (b Err) Wrap(err error) Err {
 		b.InternalErr = erringErr.InternalErr
 	}
 
-	if b.Stack != nil {
-		b.Stack = erringErr.Stack
-	}
-
 	return b
 }
 
 func (err Err) Describe(s string) Err {
-	err.Description = s
+	if err.Description != "" {
+		err.Description += " - "
+	}
+
+	err.Description += s
 
 	return err
 }
