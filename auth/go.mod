@@ -10,7 +10,7 @@ require (
 	github.com/jackc/pgerrcode v0.0.0-20220416144525-469b46aa5efa
 	github.com/jackc/pgx/v4 v4.17.2
 	github.com/regismelgaco/go-sdks/erring v0.0.0-20221127113222-947ccd31e2bf
-	github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221127002404-4d857029b5be
+	github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221203231711-e2c9de8fbc6e
 	github.com/regismelgaco/go-sdks/postgres v0.0.0-20221127002404-4d857029b5be
 	github.com/stretchr/testify v1.8.1
 	golang.org/x/crypto v0.3.0
