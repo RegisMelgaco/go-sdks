@@ -74,13 +74,17 @@ func (h Handler) IsAuthorized(next http.Handler) http.Handler {
 			return
 		}
 
-		ctx := context.WithValue(r.Context(), claimsKey{}, claims)
+		ctx := AddClaimsToContext(r.Context(), claims)
 
 		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }
 
 type claimsKey struct{}
+
+func AddClaimsToContext(ctx context.Context, claims entity.TokenClaims) context.Context {
+	return context.WithValue(ctx, claimsKey{}, claims)
+}
 
 func ClaimsFromContext(ctx context.Context) (entity.TokenClaims, error) {
 	c, ok := ctx.Value(claimsKey{}).(entity.TokenClaims)
