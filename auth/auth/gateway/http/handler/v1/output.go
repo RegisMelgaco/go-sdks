@@ -11,7 +11,7 @@ func ToUserOutput(u entity.User) UserOutput {
 }
 
 type LoginOutput struct {
-	Token string `json:"json"`
+	Token string `json:"token"`
 }
 
 func ToLoginOutput(t entity.Token) LoginOutput {
