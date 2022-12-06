@@ -153,8 +153,12 @@ func (b Err) Wrap(err error) Err {
 		b.TypeErr = erringErr.TypeErr
 	}
 
-	if b.InternalErr != nil {
-		b.InternalErr = erringErr.InternalErr
+	if erringErr.InternalErr != nil {
+		if b.InternalErr == nil {
+			b.InternalErr = erringErr.InternalErr
+		} else {
+			b.InternalErr = Wrap(b.InternalErr).Wrap(erringErr.InternalErr)
+		}
 	}
 
 	return b
