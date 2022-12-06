@@ -79,11 +79,11 @@ func (u usecase) Login(ctx context.Context, input LoginInput) (entity.Token, err
 func (u usecase) IsAuthorized(ctx context.Context, token entity.Token) (entity.TokenClaims, error) {
 	claims, err := u.GetClaimsFromToken(token)
 	if err != nil {
-		return entity.TokenClaims{}, erring.Wrap(err).Wrap(entity.ErrInvalidToken)
+		return entity.TokenClaims{}, erring.Wrap(err).Wrap(entity.ErrInvalidToken).Describe("failed to get claims from token")
 	}
 
 	if time.Now().After(claims.Expiration) {
-		return entity.TokenClaims{}, erring.Wrap(err).Wrap(entity.ErrExpiredToken)
+		return entity.TokenClaims{}, erring.Wrap(err).Wrap(entity.ErrExpiredToken).Describe("expired session")
 	}
 
 	return claims, nil
