@@ -3,7 +3,6 @@ package httpresp
 import (
 	"encoding/json"
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/regismelgaco/go-sdks/erring"
@@ -25,10 +24,14 @@ func (res Response) Handle(w http.ResponseWriter, req *http.Request) {
 	// write body
 	err := json.NewEncoder(w).Encode(res.payload)
 	if err != nil {
-		//TODO log as json with Uberzap logger
-		err = erring.Wrap(err).Describe("failed to encode response body")
+		logger := logger.FromContext(req.Context())
 
-		fmt.Println(err)
+		var err erring.Err
+		if errors.As(res.err, &err) {
+			err.Log(logger, zap.ErrorLevel)
+		} else {
+			logger.Log(zap.ErrorLevel, res.err.Error())
+		}
 	}
 
 	// log error
