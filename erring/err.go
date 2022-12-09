@@ -110,10 +110,15 @@ func (err Err) With(label string, v any) Err {
 func (b Err) Wrap(err error) Err {
 	erringErr, ok := err.(Err)
 	if !ok {
-		return Err{
-			InternalErr: err,
-			Stack:       debug.Stack(),
+		if b.InternalErr != nil {
+			b.InternalErr = fmt.Errorf("%w - %w", b.InternalErr, err)
+
+			return b
 		}
+
+		b.InternalErr = err
+
+		return b
 	}
 
 	if isStackEnabled && len(b.Stack) == 0 {
