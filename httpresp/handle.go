@@ -21,11 +21,16 @@ func (res Response) Handle(w http.ResponseWriter, req *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(res.status)
 
+	logger := logger.FromContext(req.Context())
+	logger = logger.With(
+		zap.String("path", req.URL.Path),
+		zap.String("method", req.Method),
+		zap.Int("res_status", res.status),
+	)
+
 	// write body
 	err := json.NewEncoder(w).Encode(res.payload)
 	if err != nil {
-		logger := logger.FromContext(req.Context())
-
 		var err erring.Err
 		if errors.As(res.err, &err) {
 			err.Log(logger, zap.ErrorLevel)
@@ -34,20 +39,23 @@ func (res Response) Handle(w http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	// log error
-	if res.err != nil {
-		lvl := zap.ErrorLevel
-		if res.status < http.StatusInternalServerError && res.status >= http.StatusBadRequest {
-			lvl = zap.WarnLevel
-		}
+	// log if success
+	if res.err == nil {
+		logger.Info("handled request successfully")
 
-		logger := logger.FromContext(req.Context())
-
-		var err erring.Err
-		if errors.As(res.err, &err) {
-			err.Log(logger, lvl)
-		} else {
-			logger.Log(lvl, res.err.Error())
-		}
+		return
 	}
+
+	// log error
+	lvl := zap.ErrorLevel
+	if res.status < http.StatusInternalServerError && res.status >= http.StatusBadRequest {
+		lvl = zap.WarnLevel
+	}
+
+	var erringErr erring.Err
+	if !errors.As(res.err, &erringErr) {
+		logger.Log(lvl, res.err.Error())
+	}
+
+	erringErr.Log(logger, lvl)
 }
