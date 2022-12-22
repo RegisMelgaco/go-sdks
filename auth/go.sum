@@ -993,6 +993,10 @@ github.com/prometheus/procfs v0.2.0/go.mod h1:lV6e/gmhEcM9IjHGsFOCxxuZ+z1YqCvr4O
 github.com/prometheus/procfs v0.6.0/go.mod h1:cz+aTbrPOrUb4q7XlbU9ygM+/jj0fzG6c1xBZuNvfVA=
 github.com/prometheus/procfs v0.7.3/go.mod h1:cz+aTbrPOrUb4q7XlbU9ygM+/jj0fzG6c1xBZuNvfVA=
 github.com/prometheus/tsdb v0.7.1/go.mod h1:qhTCs0VvXwvX/y3TZrWD7rabWM+ijKTux40TwIPHuXU=
+github.com/regismelgaco/go-sdks/erring v0.0.0-20221127113222-947ccd31e2bf h1:er/FU7TNZOMVV8ZrmGvbgaQ2ZgOjuAiXo/lFgXJr9ss=
+github.com/regismelgaco/go-sdks/erring v0.0.0-20221127113222-947ccd31e2bf/go.mod h1:/g1d/ekRRFec5WiV2F7qeVtGpDLpUH/Z0jq55Jg5fnk=
+github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221222001654-d3986696a033 h1:1xU0lS4afnly76zAfIibecHzVubjqC34xKapMpF1Ahs=
+github.com/regismelgaco/go-sdks/httpresp v0.0.0-20221222001654-d3986696a033/go.mod h1:U+Ehf/I9D9Hz47pWtGiRdxc5B26JGrnyYDSURl9PWZE=
 github.com/regismelgaco/go-sdks/logger v0.0.0-20221130001832-6bee3bf25aea h1:z6TBA2AgYv2i2N5zDM9Mi6lt2BkaUjYYAhH70lragPA=
 github.com/regismelgaco/go-sdks/logger v0.0.0-20221130001832-6bee3bf25aea/go.mod h1:o/43JiFzLQGUvjVO47ozclctuFvqcjnUFyNKNwwrZPw=
 github.com/regismelgaco/go-sdks/postgres v0.0.0-20221127002404-4d857029b5be h1:JcLmVkYBBGn5OcZhmwTIjZl6C3t7KESnp1MHe4u9CFU=
